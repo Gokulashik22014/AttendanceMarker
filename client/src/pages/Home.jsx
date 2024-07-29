@@ -1,10 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { FaSearch } from "react-icons/fa";
 import Card from "../components/Card";
 import CreateSheet from "../components/CreateSheet";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Home = () => {
+  const navigate=useNavigate()
+  const [data,setData]=useState()
+  const [selected,setSlected]=useState()
+  const getAll=async()=>{
+    const id=localStorage.getItem("id")
+    // console.log(id);
+    await axios.get(`http://localhost:3000/api/sheet/getall?id=${id}`).then((response)=>{
+      setData(response.data.message)
+    })
+  }
+  useEffect(()=>{
+    const id=localStorage.getItem("id")
+    if(!id){
+      navigate("/login-register")
+    }
+    getAll()
+  },[])
   return (
     <div>
       <Navbar />
@@ -34,8 +53,8 @@ const Home = () => {
             <CreateSheet/>
             {/* Display the available attendance sheet */}
             <div className="grid grid-rows-4 grid-flow-col gap-4">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((data) => (
-                <Card key={data} />
+              {data && data.map((val) => (
+                <Card key={val.id} name={val.name} body={"This is your attendance sheet "+val.name} onClick={()=>setSlected(val.id)}/>
               ))}
             </div>
           </div>

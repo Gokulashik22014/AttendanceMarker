@@ -1,7 +1,34 @@
+import axios from "axios";
 import React, { useState } from "react";
-
+import { CopyToClipboard } from "react-copy-to-clipboard";
 const CreateSheet = () => {
-    const [link,setLink]=useState("")
+  const [link, setLink] = useState("");
+  const [data, setData] = useState({
+    start: "",
+    stop: "",
+    name: "",
+  });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+  const handleSubmit = async (e) => {
+    // e.preventDefault();
+    console.log(data);
+    try {
+      const id = localStorage.getItem("id");
+      const result = await axios.post(
+        "http://localhost:3000/api/sheet/create",
+        { name: name, start: data.start, stop: data.stop, id: id }
+      );
+      setLink(`http://localhost:5173/verify/${result.data.id}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div>
       <dialog id="my_modal_3" className="modal">
@@ -16,20 +43,57 @@ const CreateSheet = () => {
           <div className="flex flex-col space-y-5">
             <div className="flex flex-col ">
               <label htmlFor="">Name</label>
-              <input type="text" className="border border-primary/60 rounded-lg py-2 px-1 focus:outline-none" placeholder="Ex: 29-07-2024 Class Attendance"/>
+              <input
+                name="name"
+                value={data.name}
+                onChange={handleChange}
+                type="text"
+                className="border border-primary/60 rounded-lg py-2 px-1 focus:outline-none"
+                placeholder="Ex: 29-07-2024 Class Attendance"
+              />
             </div>
             <div className="flex flex-col ">
               <label htmlFor="">Start Roll Number</label>
-              <input type="number" className="border border-primary/60 rounded-lg py-2 px-1 focus:outline-none" placeholder="Ex: 001"/>
+              <input
+                name="start"
+                value={data.start}
+                onChange={handleChange}
+                type="number"
+                className="border border-primary/60 rounded-lg py-2 px-1 focus:outline-none"
+                placeholder="Ex: 001"
+              />
             </div>
             <div className="flex flex-col ">
               <label htmlFor="">Stop Roll Number</label>
-              <input type="number" className="border border-primary/60 rounded-lg py-2 px-1 focus:outline-none" placeholder="Ex: 024"/>
+              <input
+                type="number"
+                value={data.number}
+                onChange={handleChange}
+                name="stop"
+                className="border border-primary/60 rounded-lg py-2 px-1 focus:outline-none"
+                placeholder="Ex: 024"
+              />
             </div>
           </div>
           <div className="flex flex-col justify-center items-center mt-5">
-          <button className="btn btn-primary px-4 py-2">Create Sheet</button>
-            <div className="w-full h-12 border border-primary/60 rounded-lg mt-7">{link}</div>
+            <button
+              onClick={handleSubmit}
+              className="btn btn-primary px-4 py-2"
+            >
+              Create Sheet
+            </button>
+            <div className="w-full h-12 border border-primary/60 rounded-lg mt-7">
+              {link ? (
+                <CopyToClipboard text={link} onCopy={() => alert("copied")}>
+                  <div className="flex space-x-3">
+                    <p>{link}</p>
+                    <button>Copy</button>
+                  </div>
+                </CopyToClipboard>
+              ) : (
+                "No link generated yet"
+              )}
+            </div>
           </div>
         </div>
       </dialog>

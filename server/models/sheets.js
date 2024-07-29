@@ -8,7 +8,8 @@ const sheetSchema=mongoose.Schema({
     data:{
         type:Map,
         of:Boolean
-    }
+    },
+    name:String,
 })
 
 const sheet=mongoose.model("sheet",sheetSchema);
