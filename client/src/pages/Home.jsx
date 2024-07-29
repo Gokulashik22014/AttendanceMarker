@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import { FaSearch } from "react-icons/fa";
 import Card from "../components/Card";
+import CreateSheet from "../components/CreateSheet";
 
 const Home = () => {
   return (
@@ -21,10 +22,16 @@ const Home = () => {
         <div className="flex justify-between  w-full px-7">
           <div>
             <div className="w-1/2 mt-7">
-              <button className="btn border-dashed btn-outline btn-primary w-24 h-24 text-4xl flex items-center justify-center">
+              <button
+                className="btn border-dashed btn-outline btn-primary w-24 h-24 text-4xl flex items-center justify-center"
+                onClick={() =>
+                  document.getElementById("my_modal_3").showModal()
+                }
+              >
                 +
               </button>
             </div>
+            <CreateSheet/>
             {/* Display the available attendance sheet */}
             <div className="grid grid-rows-4 grid-flow-col gap-4">
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((data) => (
