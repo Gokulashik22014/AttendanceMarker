@@ -31,7 +31,7 @@ export const markAttendence = async (req, res) => {
 export const getAllSheet = async (req, res) => {
   try {
     const { id } = req.query;
-    console.log(id);
+    // console.log(id);
     const sheets = await sheet.find({ createdBy: id });
     res.json({ success: true, message: sheets });
   } catch (error) {
@@ -40,8 +40,8 @@ export const getAllSheet = async (req, res) => {
 };
 export const getOneSheet = async (req, res) => {
   try {
-    const { id } = req.body;
-    console.log(id);
+    const { id } = req.query;
+    // console.log(id);
     const sheets = await sheet.findById(id);
     res.json({ success: true, message: sheets });
   } catch (error) {

@@ -22,7 +22,7 @@ const CreateSheet = () => {
       const id = localStorage.getItem("id");
       const result = await axios.post(
         "http://localhost:3000/api/sheet/create",
-        { name: name, start: data.start, stop: data.stop, id: id }
+        { name: data.name, start: data.start, stop: data.stop, id: id }
       );
       setLink(`http://localhost:5173/verify/${result.data.id}`);
     } catch (error) {
@@ -82,14 +82,11 @@ const CreateSheet = () => {
             >
               Create Sheet
             </button>
-            <div className="w-full h-12 border border-primary/60 rounded-lg mt-7">
+            <div className="w-full h-12 border border-primary/60 rounded-lg mt-7 flex space-x-3 justify-between items-center px-4">
               {link ? (
-                <CopyToClipboard text={link} onCopy={() => alert("copied")}>
-                  <div className="flex space-x-3">
-                    <p>{link}</p>
-                    <button>Copy</button>
-                  </div>
-                </CopyToClipboard>
+                <div>
+                  <p>{link}</p>
+                </div>
               ) : (
                 "No link generated yet"
               )}
